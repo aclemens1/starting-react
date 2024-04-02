@@ -1,9 +1,14 @@
 import PropTypes from 'prop-types'
 import { useEffect, useState } from 'react'
+import Button from '@mui/material/Button';
+import TextField from '@mui/material/TextField';
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
 import '@fontsource/roboto/500.css'
 import '@fontsource/roboto/700.css'
+
+import CssBaseline from '@mui/material/CssBaseline';
+
 
 const PokemonRow = ({ pokemon, onSelect }) => {
   const handleSelect = () => {
@@ -14,7 +19,7 @@ const PokemonRow = ({ pokemon, onSelect }) => {
     <tr>
       <td>{pokemon.name.english}</td>
       <td>{pokemon.type.join(', ')}</td>
-      <td><button onClick={handleSelect}>Select</button></td>
+      <td><Button variant="outlined" onClick={handleSelect}>Select</Button></td>
     </tr>
   )
 }
@@ -78,8 +83,9 @@ function App() {
   }, [])
 
   return (<>
+    <CssBaseline />
     <h1 className="title">Pokemon Search</h1>
-    <input value={filter} onChange={handleChange}></input>
+    <TextField variant="outlined" value={filter} onChange={handleChange} />
     <p>Showing top 10 pokemons using the filter above (if any):</p>
     <table>
       <thead>
