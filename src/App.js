@@ -1,5 +1,5 @@
 import PropTypes from 'prop-types'
-import React from 'react'
+import { useEffect, useState } from 'react'
 
 import '@fontsource/roboto/300.css'
 import '@fontsource/roboto/400.css'
@@ -64,70 +64,53 @@ PokemonRow.propTypes = {
   onSelect: PropTypes.func.isRequired
 }
 
-class App extends React.Component {
-  constructor(props) {
-    super(props)
+function App() {
+  const [filter, setFilter] = useState('')
+  const [selectedItem, setSelectedItem] = useState(null)
+  const [pokemon, setPokemon] = useState([])
 
-    this.state = {
-      filter: '',
-      pokemon: [],
-      selectedItem: null
-    }
+  const handleChange = (e) => {
+    setFilter(e.target.value)
   }
 
-  handleChange = (e) => {
-    this.setState({
-      ...this.state,
-      filter: e.target.value
-    })
+  const handleSelect = (pokemon) => {
+    setSelectedItem(pokemon)
   }
 
-  handleSelect = (pokemon) => {
-    this.setState({
-      ...this.state,
-      selectedItem: pokemon
-    })
-  }
-
-  componentDidMount() {
+  useEffect(() => {
     fetch('http://localhost:3000/starting-react/pokemon.json')
-       .then((response) => response.json())
-       .then((pokemon) => this.setState({
-         ...this.state,
-         pokemon
-       }))
-  }
+      .then((response) => response.json())
+      .then((data) => setPokemon(data))
+  }, [])
 
-  render() {
-    return (<>
-      <CssBaseline />
-      <h1 className="title">Pokemon Search</h1>
-      <TextField variant="outlined" value={this.state.filter} onChange={this.handleChange} />
-      <p>Showing top 10 pokemons using the filter above (if any):</p>
-      <table>
-        <thead>
-          <tr>
-            <th>Name</th>
-            <th>Type</th>
-          </tr>
-        </thead>
-        <tbody>
-          {
-            this.state.pokemon
-              .filter((pokemon) => pokemon.name.english.toLowerCase().includes(this.state.filter.toLowerCase()))
-              .slice(0, 10)
-              .map((pokemon) => (
-                <PokemonRow pokemon={pokemon} key={pokemon.id} onSelect={() => this.handleSelect(pokemon)} />
-              ))
-          }
-        </tbody>
-      </table>
-      <p>Click on a pokemon to see more details:</p>
-      {this.state.selectedItem &&
-        <PokemonInfo {...this.state.selectedItem} />
-      }
-    </>)
-  }
+  return (<>
+    <CssBaseline />
+    <h1 className="title">Pokemon Search</h1>
+    <TextField variant="outlined" value={filter} onChange={handleChange} />
+    <p>Showing top 10 pokemons using the filter above (if any):</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Type</th>
+        </tr>
+      </thead>
+      <tbody>
+        {
+          pokemon
+            .filter((pokemon) => pokemon.name.english.toLowerCase().includes(filter.toLowerCase()))
+            .slice(0, 10)
+            .map((pokemon) => (
+              <PokemonRow pokemon={pokemon} key={pokemon.id} onSelect={() => handleSelect(pokemon)} />
+            ))
+        }
+      </tbody>
+    </table>
+    <p>Click on a pokemon to see more details:</p>
+    {selectedItem &&
+      <PokemonInfo {...selectedItem} />
+    }
+  </>)
 }
 
 export default App
