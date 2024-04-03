@@ -1,21 +1,25 @@
 import { Box, Typography, List, ListItem, ListItemText } from '@mui/material'
+import PokemonContext from '../PokemonContext'
+import { useContext } from 'react'
 
-const PokemonInfo = ({name, base}) => {
+const PokemonInfo = () => {
 
-  return (
+  const { selectedItem } = useContext(PokemonContext)
+
+  return selectedItem ? (
     <Box>
-      <Typography variant="h4" compnent="h2">{name.english}</Typography>
+      <Typography variant="h6" compnent="h2">{selectedItem.name.english}</Typography>
       <List>
         {
-          Object.keys(base).map((key) => (
+          Object.keys(selectedItem.base).map((key) => (
             <ListItem key={key}>
-              <ListItemText primary={<strong>{key}</strong>} secondary={base[key]} />
+              <ListItemText primary={<strong>{key}</strong>} secondary={selectedItem.base[key]} />
             </ListItem>
           ))
         }
       </List>
     </Box>
-  )
+  ) : null
 
 }
 

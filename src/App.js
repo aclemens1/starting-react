@@ -7,6 +7,7 @@ import { CssBaseline, Container, Grid, Paper, Typography } from '@mui/material'
 import PokemonTable from './components/PokemonTable'
 import PokemonInfo from './components/PokemonInfo'
 import PokemonFilter from './components/PokemonFilter'
+import PokemonContext from './PokemonContext'
 
 function App() {
   const [filter, setFilter] = useState('')
@@ -24,32 +25,34 @@ function App() {
   }
 
   return (
-    <Container maxWidth="md" sx={ { paddingBottom: 5 } }>
-      <CssBaseline />
-      <Typography variant="h3" component="h1" gutterBottom>
-        My Page Title
-      </Typography>
-      <Grid container spacing={2}>
-        <Grid item xs={8}>
-          <Paper sx={ { padding: 2 } }>
-            <PokemonFilter filter={filter} setFilter={setFilter} />
-            <Typography sx={ { marginTop: 3, marginBottom: 3 } }>
-              Showing top 10 pokemons using the filter above (if any):
-            </Typography>
-            <PokemonTable pokemon={pokemon} filter={filter} setSelectedItem={setSelectedItem} />
-          </Paper>
-        </Grid>
-        {selectedItem &&
-          <Grid item xs={4}>
-            {selectedItem &&
-              <Paper sx={ { padding: 2 } }>
-                <PokemonInfo {...selectedItem} />
-              </Paper>
-            }
+    <PokemonContext.Provider value={ { filter, setFilter, selectedItem, setSelectedItem, pokemon, setPokemon } }>
+      <Container maxWidth="md" sx={ { marginTop: 2, paddingBottom: 5 } }>
+        <CssBaseline />
+        <Grid container spacing={2}>
+          <Grid item xs={9}>
+            <Paper sx={ { padding: 2, marginBottom: 2 } }>
+              <Typography variant="h4" component="h1">
+                Pokemon Index
+              </Typography>
+            </Paper>
+            <Paper sx={ { padding: 2 } }>
+              <PokemonFilter />
+              <Typography sx={ { marginTop: 3, marginBottom: 3 } }>
+                Showing top 3 pokemons using the filter above (if any):
+              </Typography>
+              <PokemonTable />
+            </Paper>
           </Grid>
-        }
-      </Grid>
-    </Container>)
+          <Grid item xs={3} container alignItems={'stretch'}>
+            <Paper sx={ { padding: 2, flexGrow: 1 } }>
+              { selectedItem ? <PokemonInfo /> : <Typography color={'GrayText'}>Select a Pokemon</Typography> }
+            </Paper>
+          </Grid>
+        </Grid>
+      </Container>
+    </PokemonContext.Provider>
+  )
+
 }
 
 export default App
