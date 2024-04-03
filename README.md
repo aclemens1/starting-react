@@ -1,6 +1,8 @@
 # Pokemon App
 
-Barebones React Pokemon index.
+Barebones React Pokemon Index
+
+This is a test where I challenge myself to use MUI only for a basic React app. No CSS and no HTML tags are allowed.
 
 ## Available Scripts
 
