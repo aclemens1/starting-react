@@ -1,20 +1,12 @@
 import { TextField } from '@mui/material'
-
-import { useSelector, useDispatch } from 'react-redux'
+import useStore from '../store'
 
 const PokemonFilter = () => {
 
-  const dispatch = useDispatch()
-  const filter = useSelector(state => state.filter)
-    
-  const handleChange = (e) => {
-    dispatch({
-      type: "SET_FILTER",
-      payload: e.target.value
-    })
-  }
+  const filter = useStore(state => state.filter)
+  const setFilter = useStore(state => state.setFilter)
 
-  return <TextField variant="outlined" value={filter} onChange={handleChange} placeholder='Pokemon name filter' fullWidth />
+  return <TextField variant="outlined" value={filter} onChange={ (e) => setFilter(e.target.value) } placeholder='Pokemon name filter' fullWidth />
 }
 
 export default PokemonFilter

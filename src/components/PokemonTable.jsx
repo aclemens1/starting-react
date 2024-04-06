@@ -1,21 +1,13 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
 
-import { useSelector, useDispatch } from 'react-redux'
-
 import PokemonRow from './PokemonRow'
+import useStore from '../store'
 
 const PokemonTable = () => {
 
-  const dispatch = useDispatch()
-  const pokemon = useSelector(state => state.pokemon)
-  const filter = useSelector(state => state.filter)
-
-  const handleSelect = (pokemon) => {
-    dispatch( {
-      type: "SET_SELECTED_POKEMON",
-      payload: pokemon
-    })
-  }
+  const pokemon = useStore(state => state.pokemon)
+  const filter = useStore(state => state.filter)
+  const setSelectedPokemon = useStore(state => state.setSelectedPokemon)
 
   return (
     <TableContainer component={Paper}>
@@ -35,7 +27,7 @@ const PokemonTable = () => {
               .map((pokemon) => (
                 <PokemonRow pokemon={pokemon}
                   key={pokemon.id}
-                  onSelect={(pokemon) => handleSelect(pokemon)} />
+                  onSelect={setSelectedPokemon} />
               ))
           }
         </TableBody>
