@@ -1,6 +1,7 @@
+import PropTypes from "prop-types";
 import { TableCell, TableRow } from '@mui/material'
-
 import Button from '@mui/material/Button'
+import PokemonType from '../PokemonType'
 
 const PokemonRow = ({ pokemon, onSelect }) => {
 
@@ -17,5 +18,9 @@ const PokemonRow = ({ pokemon, onSelect }) => {
   )
   
 }
+
+PokemonRow.propTypes = {
+  pokemon: PropTypes.arrayOf(PokemonType),
+};
 
 export default PokemonRow

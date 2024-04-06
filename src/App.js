@@ -4,7 +4,7 @@ import '@fontsource/roboto/400.css'
 
 import { CssBaseline, Container, Grid, Paper, Typography } from '@mui/material'
 
-import { legacy_createStore as createStore } from 'redux'
+import { createStore } from 'redux'
 import { Provider, useSelector, useDispatch } from 'react-redux'
 
 import PokemonTable from './components/PokemonTable'
