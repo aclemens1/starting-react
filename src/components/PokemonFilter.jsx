@@ -1,13 +1,11 @@
 import { TextField } from '@mui/material'
-import { useContext } from 'react'
-import PokemonContext from '../PokemonContext'
+
+import { useSelector, useDispatch } from 'react-redux'
 
 const PokemonFilter = () => {
 
-  const {
-    state: { filter },
-    dispatch
-  } = useContext(PokemonContext)
+  const dispatch = useDispatch()
+  const filter = useSelector(state => state.filter)
     
   const handleChange = (e) => {
     dispatch({

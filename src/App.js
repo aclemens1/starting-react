@@ -4,12 +4,18 @@ import '@fontsource/roboto/400.css'
 
 import { CssBaseline, Container, Grid, Paper, Typography } from '@mui/material'
 
+import { legacy_createStore as createStore } from 'redux'
+import { Provider, useSelector, useDispatch } from 'react-redux'
+
 import PokemonTable from './components/PokemonTable'
 import PokemonInfo from './components/PokemonInfo'
 import PokemonFilter from './components/PokemonFilter'
-import PokemonContext from './PokemonContext'
 
-const pokemonReducer = (state, action) => {
+const pokemonReducer = (state = {
+  pokemon: [],
+  filter: "",
+  selectedPokemon: null
+}, action) => {
   switch(action.type) {
     case "SET_FILTER":
       return {
@@ -27,17 +33,17 @@ const pokemonReducer = (state, action) => {
         selectedPokemon: action.payload
       }
     default:
-      throw new Error("No action")
+      return state
   }
 }
 
+const store = createStore(pokemonReducer)
+
 function App() {
 
-  const [state, dispatch] = useReducer(pokemonReducer, {
-    pokemon: [],
-    filter: "",
-    selectedPokemon: null
-  })
+  const dispatch = useDispatch()
+  const pokemon = useSelector(state => state.pokemon)
+  const selectedPokemon = useSelector(state => state.selectedPokemon)
 
   useEffect(() => {
     fetch('http://localhost:3000/starting-react/pokemon.json')
@@ -48,12 +54,12 @@ function App() {
       }))
   }, [])
 
-  if (!state.pokemon) {
+  if (!pokemon) {
     return <div>Loading data...</div>
   }
 
   return (
-    <PokemonContext.Provider value={ { state, dispatch } }>
+    
       <Container maxWidth="md" sx={ { marginTop: 2, paddingBottom: 5 } }>
         <CssBaseline />
         <Grid container spacing={2}>
@@ -73,14 +79,14 @@ function App() {
           </Grid>
           <Grid item xs={3} container alignItems={'stretch'}>
             <Paper sx={ { padding: 2, flexGrow: 1 } }>
-              { state.selectedPokemon ? <PokemonInfo /> : <Typography color={'GrayText'}>Select a Pokemon</Typography> }
+              { selectedPokemon ? <PokemonInfo /> : <Typography color={'GrayText'}>Select a Pokemon</Typography> }
             </Paper>
           </Grid>
         </Grid>
       </Container>
-    </PokemonContext.Provider>
+    
   )
 
 }
 
-export default App
+export default () => <Provider store={store}><App /></Provider>

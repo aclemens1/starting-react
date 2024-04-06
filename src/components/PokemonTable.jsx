@@ -1,16 +1,15 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
 
+import { useSelector, useDispatch } from 'react-redux'
+
 import PokemonRow from './PokemonRow'
-import PokemonContext from '../PokemonContext'
-import { useContext } from 'react'
 
 const PokemonTable = () => {
 
-  const {
-    state: { pokemon, filter },
-    dispatch
-  } = useContext(PokemonContext)
-  
+  const dispatch = useDispatch()
+  const pokemon = useSelector(state => state.pokemon)
+  const filter = useSelector(state => state.filter)
+
   const handleSelect = (pokemon) => {
     dispatch( {
       type: "SET_SELECTED_POKEMON",
