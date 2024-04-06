@@ -4,16 +4,19 @@ import { useContext } from 'react'
 
 const PokemonInfo = () => {
 
-  const { selectedItem } = useContext(PokemonContext)
+  const {
+    state: { selectedPokemon },
+    dispatch
+  } = useContext(PokemonContext)
 
-  return selectedItem ? (
+  return selectedPokemon ? (
     <Box>
-      <Typography variant="h6" compnent="h2">{selectedItem.name.english}</Typography>
+      <Typography variant="h6" compnent="h2">{selectedPokemon.name.english}</Typography>
       <List>
         {
-          Object.keys(selectedItem.base).map((key) => (
+          Object.keys(selectedPokemon.base).map((key) => (
             <ListItem key={key}>
-              <ListItemText primary={<strong>{key}</strong>} secondary={selectedItem.base[key]} />
+              <ListItemText primary={<strong>{key}</strong>} secondary={selectedPokemon.base[key]} />
             </ListItem>
           ))
         }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useReducer, useState } from 'react'
 
 import '@fontsource/roboto/400.css'
 
@@ -9,23 +9,51 @@ import PokemonInfo from './components/PokemonInfo'
 import PokemonFilter from './components/PokemonFilter'
 import PokemonContext from './PokemonContext'
 
+const pokemonReducer = (state, action) => {
+  switch(action.type) {
+    case "SET_FILTER":
+      return {
+        ...state,
+        filter: action.payload
+      }
+    case "SET_POKEMON":
+      return {
+        ...state,
+        pokemon: action.payload
+      }
+    case "SET_SELECTED_POKEMON":
+      return {
+        ...state,
+        selectedPokemon: action.payload
+      }
+    default:
+      throw new Error("No action")
+  }
+}
+
 function App() {
-  const [filter, setFilter] = useState('')
-  const [selectedItem, setSelectedItem] = useState(null)
-  const [pokemon, setPokemon] = useState([])
+
+  const [state, dispatch] = useReducer(pokemonReducer, {
+    pokemon: [],
+    filter: "",
+    selectedPokemon: null
+  })
 
   useEffect(() => {
     fetch('http://localhost:3000/starting-react/pokemon.json')
       .then((response) => response.json())
-      .then((data) => setPokemon(data))
+      .then((data) => dispatch({
+        type: "SET_POKEMON",
+        payload: data
+      }))
   }, [])
 
-  if (!pokemon) {
+  if (!state.pokemon) {
     return <div>Loading data...</div>
   }
 
   return (
-    <PokemonContext.Provider value={ { filter, setFilter, selectedItem, setSelectedItem, pokemon, setPokemon } }>
+    <PokemonContext.Provider value={ { state, dispatch } }>
       <Container maxWidth="md" sx={ { marginTop: 2, paddingBottom: 5 } }>
         <CssBaseline />
         <Grid container spacing={2}>
@@ -45,7 +73,7 @@ function App() {
           </Grid>
           <Grid item xs={3} container alignItems={'stretch'}>
             <Paper sx={ { padding: 2, flexGrow: 1 } }>
-              { selectedItem ? <PokemonInfo /> : <Typography color={'GrayText'}>Select a Pokemon</Typography> }
+              { state.selectedPokemon ? <PokemonInfo /> : <Typography color={'GrayText'}>Select a Pokemon</Typography> }
             </Paper>
           </Grid>
         </Grid>

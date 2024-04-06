@@ -4,10 +4,16 @@ import PokemonContext from '../PokemonContext'
 
 const PokemonFilter = () => {
 
-  const { filter, setFilter } = useContext(PokemonContext)
+  const {
+    state: { filter },
+    dispatch
+  } = useContext(PokemonContext)
     
   const handleChange = (e) => {
-    setFilter(e.target.value)
+    dispatch({
+      type: "SET_FILTER",
+      payload: e.target.value
+    })
   }
 
   return <TextField variant="outlined" value={filter} onChange={handleChange} placeholder='Pokemon name filter' fullWidth />

@@ -6,10 +6,16 @@ import { useContext } from 'react'
 
 const PokemonTable = () => {
 
-  const { pokemon, filter, setSelectedItem } = useContext(PokemonContext)
+  const {
+    state: { pokemon, filter },
+    dispatch
+  } = useContext(PokemonContext)
   
   const handleSelect = (pokemon) => {
-    setSelectedItem(pokemon)
+    dispatch( {
+      type: "SET_SELECTED_POKEMON",
+      payload: pokemon
+    })
   }
 
   return (
@@ -28,7 +34,9 @@ const PokemonTable = () => {
               .filter((pokemon) => pokemon.name.english.toLowerCase().includes(filter.toLowerCase()))
               .slice(0, 3)
               .map((pokemon) => (
-                <PokemonRow pokemon={pokemon} key={pokemon.id} onSelect={() => handleSelect(pokemon)} />
+                <PokemonRow pokemon={pokemon}
+                  key={pokemon.id}
+                  onSelect={(pokemon) => handleSelect(pokemon)} />
               ))
           }
         </TableBody>
