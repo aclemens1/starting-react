@@ -2,7 +2,7 @@
   "name": "starting-react",
   "version": "0.1.0",
   "private": true,
-  "homepage": "https://aclemens1.github.io/rincewind-weather/",
+  "homepage": "https://aclemens1.github.io/starting-react/",
   "dependencies": {
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.5",
