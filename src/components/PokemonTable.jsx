@@ -1,13 +1,10 @@
 import { Table, TableBody, TableCell, TableContainer, TableHead, TableRow, Paper } from '@mui/material'
 
 import PokemonRow from './PokemonRow'
-import useStore from '../store'
+import store from '../store'
+import { observer } from 'mobx-react'
 
 const PokemonTable = () => {
-
-  const pokemon = useStore(state => state.pokemon)
-  const filter = useStore(state => state.filter)
-  const setSelectedPokemon = useStore(state => state.setSelectedPokemon)
 
   return (
     <TableContainer component={Paper}>
@@ -21,14 +18,11 @@ const PokemonTable = () => {
         </TableHead>
         <TableBody>
           {
-            pokemon
-              .filter((pokemon) => pokemon.name.english.toLowerCase().includes(filter.toLowerCase()))
-              .slice(0, 3)
-              .map((pokemon) => (
-                <PokemonRow pokemon={pokemon}
-                  key={pokemon.id}
-                  onSelect={setSelectedPokemon} />
-              ))
+            store.filteredPokemon.slice(0, 3).map((pokemon) => (
+              <PokemonRow pokemon={pokemon}
+                key={pokemon.id}
+                onSelect={(pokemon) => store.setSelectedPokemon(pokemon)} />
+            ))
           }
         </TableBody>
       </Table>
@@ -37,4 +31,4 @@ const PokemonTable = () => {
 
 }
 
-export default PokemonTable
+export default observer(PokemonTable)

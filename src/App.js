@@ -5,11 +5,11 @@ import { CssBaseline, Container, Grid, Paper, Typography } from '@mui/material'
 import PokemonTable from './components/PokemonTable'
 import PokemonInfo from './components/PokemonInfo'
 import PokemonFilter from './components/PokemonFilter'
-import useStore from './store'
+import store from './store'
+
+import { observer } from 'mobx-react'
 
 function App() {
-
-  const selectedPokemon = useStore(state => state.selectedPokemon)
 
   return (
     
@@ -32,7 +32,7 @@ function App() {
           </Grid>
           <Grid item xs={3} container alignItems={'stretch'}>
             <Paper sx={ { padding: 2, flexGrow: 1 } }>
-              { selectedPokemon ? <PokemonInfo /> : <Typography color={'GrayText'}>Select a Pokemon</Typography> }
+              { store.selectedPokemon ? <PokemonInfo /> : <Typography color={'GrayText'}>Select a Pokemon</Typography> }
             </Paper>
           </Grid>
         </Grid>
@@ -42,4 +42,4 @@ function App() {
 
 }
 
-export default App
+export default observer(App)

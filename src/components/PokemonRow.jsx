@@ -20,7 +20,7 @@ const PokemonRow = ({ pokemon, onSelect }) => {
 }
 
 PokemonRow.propTypes = {
-  pokemon: PropTypes.arrayOf(PokemonType),
+  pokemon: PokemonType,
 };
 
 export default PokemonRow

@@ -1,20 +1,19 @@
 import { Box, Typography, List, ListItem, ListItemText } from '@mui/material'
 
 import PokemonType from '../PokemonType'
-import useStore from '../store'
+import store from '../store'
+import { observer } from 'mobx-react'
 
 const PokemonInfo = () => {
 
-  const selectedPokemon = useStore(state => state.selectedPokemon)
-
-  return selectedPokemon ? (
+  return store.selectedPokemon ? (
     <Box>
-      <Typography variant="h6" compnent="h2">{selectedPokemon.name.english}</Typography>
+      <Typography variant="h6" compnent="h2">{store.selectedPokemon.name.english}</Typography>
       <List>
         {
-          Object.keys(selectedPokemon.base).map((key) => (
+          Object.keys(store.selectedPokemon.base).map((key) => (
             <ListItem key={key}>
-              <ListItemText primary={<strong>{key}</strong>} secondary={selectedPokemon.base[key]} />
+              <ListItemText primary={<strong>{key}</strong>} secondary={store.selectedPokemon.base[key]} />
             </ListItem>
           ))
         }
@@ -26,4 +25,4 @@ const PokemonInfo = () => {
 
 PokemonInfo.propTypes = PokemonType;
 
-export default PokemonInfo
+export default observer(PokemonInfo)
